@@ -39,18 +39,47 @@ export default function Products() {
           </div>
         ) : products.length > 0 ? (
           <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {products.map((product) => (
-              <div key={product.id} className="bg-white rounded-lg shadow p-4 hover:shadow-md transition-shadow">
-                <h2 className="text-xl font-semibold text-gray-800">{product.name}</h2>
-                <p className="text-gray-600 mt-2">${product.price}</p>
-                <p className="text-gray-500 mt-1">{product.description}</p>
-                <button 
-                  className="mt-3 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
-                  onClick={() => addToCart(product)}
-                >
-                  Add to Cart
-                </button>
-              </div>
+              {products.map((product) => (
+                <div key={product.id} className="bg-white rounded-lg shadow hover:shadow-lg transition group">
+                  <Link to={`/products/${product.slug}`} className="block">
+                    <div className="relative overflow-hidden h-64">
+                      <img
+                        src={product.main_image}
+                        alt={product.name}
+                        className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+                      />
+                      {product.new_release && (
+                        <span className="absolute top-2 left-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded">
+                          New
+                        </span>
+                      )}
+                    </div>
+                  </Link>
+                  <div className="p-4">
+                    <Link to={`/products/${product.slug}`} className="hover:underline">
+                      <h3 className="font-bold text-lg mb-1">{product.name}</h3>
+                    </Link>
+                    <div className="flex items-center justify-between mt-2">
+                      <div>
+                        <span className="text-gray-900 font-bold">${product.price}</span>
+                        {product.original_price && (
+                          <span className="ml-2 text-gray-500 line-through text-sm">
+                            ${product.original_price}
+                          </span>
+                        )}
+                      </div>
+                      <button
+                        className="px-3 py-1 bg-black text-white text-sm rounded hover:bg-gray-800 transition"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          addToCart(product);
+                        }}
+                      >
+                        Add to Cart
+                      </button>
+                    </div>
+                  </div>
+                </div>
             ))}
           </div>
         ) : (
